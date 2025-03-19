@@ -53,18 +53,18 @@ int main(int argc, char** argv)
 
   cute::device_init(0);
 
-  thrust::host_vector<float> h_A(m);
-  thrust::host_vector<float> h_B(m);
-  thrust::host_vector<float> h_C(m);
-  thrust::host_vector<float> h_correct_C(m);
+  thrust::host_vector<float> h_A(N);
+  thrust::host_vector<float> h_B(N);
+  thrust::host_vector<float> h_C(N);
+  thrust::host_vector<float> h_correct_C(N);
 
-  for (int j = 0; j < m; ++j) {
+  for (int j = 0; j < N; ++j) {
     h_A[j] = static_cast<half>(2*(rand() / float(RAND_MAX)) - 1);
   }
-  for (int j = 0; j < m; ++j) {
+  for (int j = 0; j < N; ++j) {
     h_B[j] = static_cast<half>(2*(rand() / float(RAND_MAX)) - 1);
   }
-  for (int j = 0; j < m; j++) {
+  for (int j = 0; j < N; j++) {
     h_C[j] = static_cast<half>(0);
     h_correct_C[j] = h_A[j] + h_B[j];
   }
@@ -79,14 +79,14 @@ int main(int argc, char** argv)
   // kernel launch
   dim3 Grid(N / BLOCK_SIZE);
   dim3 Block(BLOCK_SIZE / NUM_ELEMENT_PER_THREAD);
-  vector_add<NUM_ELEMENT_PER_THREAD><<<Grid, Block>>>(d_A, d_B, d_C, N);
+  vector_add<NUM_ELEMENT_PER_THREAD><<<Grid, Block>>>(&d_A, &d_B, &d_C, N);
   CUTE_CHECK_LAST();
   thrust::host_vector<float> cute_result = d_C;
 
   printf("Start to check if result equals");
-  for (int i = 0; i < m; i++) {
+  for (int i = 0; i < N; i++) {
     if (std::abs(h_correct_C[i] - cute_result[i]) > 0.001f) {
-      print("Result not correct! position %d, correct_res: %f, cute result: %f", i, h_correct_C[i], cute_result[i]);
+      printf("Result not correct! position %d, correct_res: %f, cute result: %f", i, h_correct_C[i], cute_result[i]);
       exit(1);
     }
   }
