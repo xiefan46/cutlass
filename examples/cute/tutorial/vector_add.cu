@@ -23,9 +23,9 @@ __global__ void vector_add(float* A, float* B, float* C, const int N) {
   cute::Tensor tb = cute::make_tensor(cute::make_gmem_ptr(B), cute::make_shape(cute::Int<N>{}));
   cute::Tensor tc = cute::make_tensor(cute::make_gmem_ptr(C), cute::make_shape(cute::Int<N>{}));
 
-  cute::Tensor ta_tile = cute::local_tile(ta, cute::make_shape(Int<kElementPerThread>{}), cute::make_coord(idx));
-  cute::Tensor tb_tile = cute::local_tile(tb, cute::make_shape(Int<kElementPerThread>{}), cute::make_coord(idx));
-  cute::Tensor tc_tile = cute::local_tile(tc, cute::make_shape(Int<kElementPerThread>{}), cute::make_coord(idx));
+  cute::Tensor ta_tile = cute::local_tile(ta, cute::make_shape(cute::Int<kElementPerThread>{}), cute::make_coord(idx));
+  cute::Tensor tb_tile = cute::local_tile(tb, cute::make_shape(cute::Int<kElementPerThread>{}), cute::make_coord(idx));
+  cute::Tensor tc_tile = cute::local_tile(tc, cute::make_shape(cute::Int<kElementPerThread>{}), cute::make_coord(idx));
 
   cute::Tensor ta_reg = cute::make_tensor_like(ta_tile);
   cute::Tensor tb_reg = cute::make_tensor_like(tb_tile);
