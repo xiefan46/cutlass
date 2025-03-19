@@ -59,13 +59,13 @@ int main(int argc, char** argv)
   thrust::host_vector<float> h_correct_C(N);
 
   for (int j = 0; j < N; ++j) {
-    h_A[j] = static_cast<half>(2*(rand() / float(RAND_MAX)) - 1);
+    h_A[j] = static_cast<float>(2*(rand() / float(RAND_MAX)) - 1);
   }
   for (int j = 0; j < N; ++j) {
-    h_B[j] = static_cast<half>(2*(rand() / float(RAND_MAX)) - 1);
+    h_B[j] = static_cast<float>(2*(rand() / float(RAND_MAX)) - 1);
   }
   for (int j = 0; j < N; j++) {
-    h_C[j] = static_cast<half>(0);
+    h_C[j] = static_cast<float>(0);
     h_correct_C[j] = h_A[j] + h_B[j];
   }
 
@@ -79,7 +79,7 @@ int main(int argc, char** argv)
   // kernel launch
   dim3 Grid(N / BLOCK_SIZE);
   dim3 Block(BLOCK_SIZE / NUM_ELEMENT_PER_THREAD);
-  vector_add<NUM_ELEMENT_PER_THREAD><<<Grid, Block>>>(&d_A, &d_B, &d_C, N);
+  vector_add<NUM_ELEMENT_PER_THREAD><<<Grid, Block>>>(d_A.data().get(), d_B.data().get(), d_C.data().get(), N);
   CUTE_CHECK_LAST();
   thrust::host_vector<float> cute_result = d_C;
 
