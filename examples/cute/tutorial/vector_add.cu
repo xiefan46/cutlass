@@ -35,7 +35,7 @@ __global__ void vector_add(float* A, float* B, float* C, const int N) {
   cute::copy(tb_tile, tb_reg);
 
   #pragma unroll
-  for (int i = 0; i < cute::size(ta_reg); i++) {
+  for (int i = 0; i < kElementPerThread; i++) {
     tc_reg(i) = ta_reg(i) + tb_reg(i);
   }
 
