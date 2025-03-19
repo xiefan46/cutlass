@@ -19,9 +19,9 @@ __global__ void vector_add(float* A, float* B, float* C, const int N) {
   if (idx >= N / kElementPerThread) {
     return;
   }
-  cute::Tensor ta = cute::make_tensor(cute::make_gmem_ptr(A), cute::make_shape(cute::Int<N>{}));
-  cute::Tensor tb = cute::make_tensor(cute::make_gmem_ptr(B), cute::make_shape(cute::Int<N>{}));
-  cute::Tensor tc = cute::make_tensor(cute::make_gmem_ptr(C), cute::make_shape(cute::Int<N>{}));
+  cute::Tensor ta = cute::make_tensor(cute::make_gmem_ptr(A), cute::make_shape(N));
+  cute::Tensor tb = cute::make_tensor(cute::make_gmem_ptr(B), cute::make_shape(N));
+  cute::Tensor tc = cute::make_tensor(cute::make_gmem_ptr(C), cute::make_shape(N));
 
   cute::Tensor ta_tile = cute::local_tile(ta, cute::make_shape(cute::Int<kElementPerThread>{}), cute::make_coord(idx));
   cute::Tensor tb_tile = cute::local_tile(tb, cute::make_shape(cute::Int<kElementPerThread>{}), cute::make_coord(idx));
