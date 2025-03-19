@@ -83,7 +83,7 @@ int main(int argc, char** argv)
   CUTE_CHECK_LAST();
   thrust::host_vector<float> cute_result = d_C;
 
-  printf("Start to check if result equals");
+  std::cout<<"Start to check if result equals"<<std::endl;
   for (int i = 0; i < N; i++) {
     if (std::abs(h_correct_C[i] - cute_result[i]) > 0.001f) {
       printf("Result not correct! position %d, correct_res: %f, cute result: %f", i, h_correct_C[i], cute_result[i]);
@@ -91,6 +91,9 @@ int main(int argc, char** argv)
     }
   }
 
-  printf("Vector add finished");
+  for (int i = 0; i < 10; i++) {
+    std::cout<<"value: "<<cute_result[i]<<std::endl;
+  }
+  std::cout<<"Vector add finished"<<std::endl;
   return 0;
 }
